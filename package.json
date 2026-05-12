@@ -4,7 +4,7 @@
   "description": "Minimal, well-typed CloudKit server-to-server request signing for Node.js.",
   "type": "module",
   "license": "MIT",
-  "author": "",
+  "author": "Liam Sawyer",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LiamSx45/cloudkit-sign.git"
