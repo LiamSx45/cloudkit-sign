@@ -142,14 +142,6 @@ cloudKitPath({
 });
 ```
 
-## Before Publishing
-
-- Create the GitHub repo at `LiamSx45/cloudkit-sign`.
-- Replace the blank `author` field in `package.json` if you want your name or npm identity included.
-- Run `npm run check`, `npm test`, and `npm pack --dry-run`.
-- Publish with `npm publish --access public`.
-- Add the npm package URL to the GitHub repo description after publishing.
-
 ## References
 
 - [Apple CloudKit Web Services: Composing Web Service Requests](https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitWebServicesReference/SettingUpWebServices.html)
