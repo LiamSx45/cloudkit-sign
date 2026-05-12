@@ -1,0 +1,49 @@
+{
+  "name": "cloudkit-sign",
+  "version": "0.1.0",
+  "description": "Minimal, well-typed CloudKit server-to-server request signing for Node.js.",
+  "type": "module",
+  "license": "MIT",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiamSx45/cloudkit-sign.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LiamSx45/cloudkit-sign/issues"
+  },
+  "homepage": "https://github.com/LiamSx45/cloudkit-sign#readme",
+  "keywords": [
+    "cloudkit",
+    "apple",
+    "server-to-server",
+    "auth",
+    "signature",
+    "node"
+  ],
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/**/*.test.ts",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "tsx": "^4.15.7",
+    "typescript": "^5.4.5"
+  }
+}
