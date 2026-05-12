@@ -1,5 +1,7 @@
 # cloudkit-sign
 
+[![npm version](https://img.shields.io/npm/v/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign) [![license](https://img.shields.io/npm/l/cloudkit-sign.svg)](./LICENSE) [![types](https://img.shields.io/npm/types/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign)
+
 Minimal, well-typed CloudKit server-to-server request signing for Node.js.
 
 Apple's CloudKit Web Services docs describe the signing flow, but the details are easy to get subtly wrong: hash the body first, remove milliseconds from the date, sign the URL subpath instead of the full origin, and include query parameters. This package keeps that small ritual in one tested place.
