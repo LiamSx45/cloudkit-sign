@@ -1,6 +1,6 @@
 # cloudkit-sign
 
-[![npm version](https://img.shields.io/npm/v/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign) [![license](https://img.shields.io/npm/l/cloudkit-sign.svg)](./LICENSE) [![types](https://img.shields.io/npm/types/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign)
+[![npm version](https://img.shields.io/npm/v/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign) [![CI](https://github.com/LiamSx45/cloudkit-sign/actions/workflows/ci.yml/badge.svg)](https://github.com/LiamSx45/cloudkit-sign/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/cloudkit-sign.svg)](./LICENSE) [![types](https://img.shields.io/npm/types/cloudkit-sign.svg)](https://www.npmjs.com/package/cloudkit-sign)
 
 Minimal, well-typed CloudKit server-to-server request signing for Node.js.
 
@@ -16,7 +16,7 @@ npm install cloudkit-sign
 
 ```ts
 import { readFileSync } from "node:fs";
-import { cloudKitPath, signCloudKitRequest } from "cloudkit-sign";
+import { cloudKitPath, cloudKitUrl, signCloudKitRequest } from "cloudkit-sign";
 
 const privateKey = readFileSync("./eckey.pem", "utf8");
 const path = cloudKitPath({
@@ -39,7 +39,7 @@ const signed = signCloudKitRequest({
   body,
 });
 
-const response = await fetch(`https://api.apple-cloudkit.com${path}`, {
+const response = await fetch(cloudKitUrl(path), {
   method: "POST",
   headers: {
     "content-type": "application/json",
@@ -91,10 +91,15 @@ cloudKitPath({
 });
 ```
 
+### `cloudKitUrl(pathOrUrl)`
+
+Turns a CloudKit subpath into an absolute `https://api.apple-cloudkit.com...` URL. Absolute URLs are returned unchanged.
+
 ## Important Details
 
 - Generate the EC key with `openssl ecparam -name prime256v1 -genkey -noout -out eckey.pem`.
-- Upload the public key to CloudKit Dashboard and use the generated Key ID.
+- Export the public key with `openssl ec -in eckey.pem -pubout`, upload it to CloudKit Dashboard, and use the generated Key ID.
+- Server-to-server keys authenticate as the key owner against the **public** database.
 - The signed date is valid for 10 minutes, so your server clock needs to be accurate.
 - For `GET` requests, pass no body or an empty string.
 - For JSON bodies, this package signs the exact `JSON.stringify` output it returns as `signed.body`. If you need a custom serializer, pass your already-serialized string or bytes.
@@ -125,6 +130,10 @@ Pass one of these values as `operation` to `cloudKitPath()`:
 "subscriptions/list";
 "subscriptions/lookup";
 "subscriptions/modify";
+
+// Assets
+"assets/upload";
+"assets/rereference";
 
 // Users
 "users/current";

@@ -67,6 +67,15 @@ export interface CloudKitPathOptions {
 export function signCloudKitRequest(
   options: SignCloudKitRequestOptions,
 ): SignedCloudKitRequest {
+  const keyId = options.keyId.trim();
+  if (!keyId) {
+    throw new TypeError("CloudKit keyId must be a non-empty string.");
+  }
+
+  if (options.privateKey == null || options.privateKey === "") {
+    throw new TypeError("CloudKit privateKey is required.");
+  }
+
   const date = toCloudKitISO8601(options.date ?? new Date());
   const body = normalizeBody(options.body);
   const bodyHash = hashBody(body);
@@ -81,7 +90,7 @@ export function signCloudKitRequest(
     bodyHash,
     date,
     headers: {
-      "X-Apple-CloudKit-Request-KeyID": options.keyId,
+      "X-Apple-CloudKit-Request-KeyID": keyId,
       "X-Apple-CloudKit-Request-ISO8601Date": date,
       "X-Apple-CloudKit-Request-SignatureV1": signature,
     },
@@ -92,11 +101,37 @@ export function signCloudKitRequest(
 }
 
 export function cloudKitPath(options: CloudKitPathOptions): string {
-  const operation = options.operation.startsWith("/")
-    ? options.operation
-    : `/${options.operation}`;
+  const container = options.container.trim();
+  if (!container) {
+    throw new TypeError("CloudKit container must be a non-empty string.");
+  }
 
-  return `/database/${options.version ?? 1}/${encodeURIComponent(options.container)}/${options.environment}/${options.database}${operation}`;
+  const operationInput = options.operation.trim();
+  if (!operationInput) {
+    throw new TypeError("CloudKit operation must be a non-empty string.");
+  }
+
+  const operation = operationInput.startsWith("/")
+    ? operationInput
+    : `/${operationInput}`;
+
+  return `/database/${options.version ?? 1}/${encodeURIComponent(container)}/${options.environment}/${options.database}${operation}`;
+}
+
+/**
+ * Builds an absolute CloudKit web service URL from a signed subpath.
+ */
+export function cloudKitUrl(pathOrUrl: string | URL): string {
+  if (typeof pathOrUrl !== "string") {
+    return pathOrUrl.toString();
+  }
+
+  if (/^https?:\/\//i.test(pathOrUrl)) {
+    return pathOrUrl;
+  }
+
+  const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  return `${CLOUDKIT_API_ORIGIN}${path}`;
 }
 
 export function toCloudKitISO8601(date: Date): string {
