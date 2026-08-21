@@ -7,6 +7,7 @@
 - Validate empty `keyId`, `privateKey`, container, and operation inputs.
 - Document asset upload/rereference operations and public-database S2S access.
 - Update `tsx` / `@types/node` and clear the transitive esbuild advisory.
+- Fix the test script glob so CI passes on Node 18/20 (shell `**` expansion).
 
 ## 0.1.0
 
