@@ -8,6 +8,7 @@
 - Document asset upload/rereference operations and public-database S2S access.
 - Update `tsx` / `@types/node` and clear the transitive esbuild advisory.
 - Fix the test script glob so CI passes on Node 18/20 (shell `**` expansion).
+- Bump GitHub Actions to Node 24 runtimes (`checkout`/`setup-node` v5) and test Node 24.
 
 ## 0.1.0
 
